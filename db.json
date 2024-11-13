@@ -10,7 +10,11 @@
       "id": "2",
       "image": "https://m.media-amazon.com/images/M/MV5BZTk5ODY0MmQtMzA3Ni00NGY1LThiYzItZThiNjFiNDM4MTM3XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
       "name": "Deadpool & Wolverine",
-      "year": 2024
+      "year": "2024",
+      "genres": [
+        "Adventure",
+        "Action"
+      ]
     },
     {
       "id": "3",
@@ -28,13 +32,17 @@
       "id": "5",
       "image": "https://es.web.img3.acsta.net/medias/nmedia/18/82/42/47/20420623.jpg",
       "name": "Solo en casa",
-      "year": 1990
+      "year": 1990,
+      "genres": [
+        "Sci-Fi"
+      ]
     },
     {
       "id": "6",
       "image": "https://m.media-amazon.com/images/I/61T2peGJrXL._AC_UF894,1000_QL80_.jpg",
       "name": "Atrapame si puedes",
-      "year": 2002
+      "year": 2002,
+      "genres": []
     }
   ]
 }

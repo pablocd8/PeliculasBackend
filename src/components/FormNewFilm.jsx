@@ -1,22 +1,28 @@
 import React, { useState } from 'react';
-import CrearPelicula from './Crear';  
+import CrearPelicula from './Crear';
+import SelectGenres from './Generos';
+import './App.css';
 
 function Formulario({ agregarPelicula }) {
-  const [name, setName] = useState('');  
-  const [year, setYear] = useState('');  
-  const [image, setImage] = useState(''); 
-  const agregarPeliculaHandler = (e) => {
-    e.preventDefault(); 
+  const [name, setName] = useState('');
+  const [year, setYear] = useState('');
+  const [image, setImage] = useState('');
+  const [genres, setGenres] = useState([]); 
+  const [newGenre, setNewGenre] = useState(''); 
 
-    if (!name || !year || !image) { 
+  const agregarPeliculaHandler = (e) => {
+    e.preventDefault();
+
+    if (!name || !year || !image) {
       alert('Por favor, complete todos los campos.');
       return;
     }
 
     const peliculaNueva = {
-      name,    
-      year,    
-      image,  
+      name,
+      year,
+      image,
+      genres, 
     };
 
     console.log('Enviando película:', peliculaNueva);
@@ -30,15 +36,31 @@ function Formulario({ agregarPelicula }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        agregarPelicula(data);  
-        setName(''); 
-        setYear(''); 
-        setImage(''); 
+        agregarPelicula(data);
+        setName('');
+        setYear('');
+        setImage('');
+        setGenres([]); 
+        setNewGenre(''); 
       })
       .catch((error) => {
         console.error('Error al añadir la película:', error);
         alert('Hubo un error al añadir la película.');
       });
+  };
+
+  const handleAddGenre = (e) => {
+    e.preventDefault();
+    if (newGenre && !genres.includes(newGenre)) {
+      setGenres([...genres, newGenre])
+      setNewGenre(''); 
+    } else {
+      alert('Por favor ingrese un género válido y no repetido.');
+    }
+  };
+
+  const handleDeleteGenre = (genre) => {
+    setGenres(genres.filter(g => g !== genre));
   };
 
   return (
@@ -50,25 +72,45 @@ function Formulario({ agregarPelicula }) {
           id="Nombre"
           placeholder="Nombre"
           required
-          value={name}        
-          onChange={(e) => setName(e.target.value)}  
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
         <input
           type="text"
           id="year"
           placeholder="Año"
           required
-          value={year}       
-          onChange={(e) => setYear(e.target.value)}  
+          value={year}
+          onChange={(e) => setYear(e.target.value)}
         />
         <input
           type="text"
           id="imagen"
           placeholder="Link imagen"
-          value={image}       
-          onChange={(e) => setImage(e.target.value)}  
+          value={image}
+          onChange={(e) => setImage(e.target.value)}
         />
         <CrearPelicula handleClick={agregarPeliculaHandler} />
+        <div>
+          <input
+            type="text"
+            value={newGenre}
+            onChange={(e) => setNewGenre(e.target.value)}
+            placeholder="Añadir nuevo género"
+          />
+          <button onClick={handleAddGenre}>Añadir Género</button>
+        </div>
+        <div>
+          <h3>Géneros Seleccionados:</h3>
+          <ul>
+            {genres.map((genre, index) => (
+              <li key={index}>
+                {genre} <button onClick={() => handleDeleteGenre(genre)}>Eliminar</button>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <SelectGenres selectedGenres={genres} setSelectedGenres={setGenres} />
       </form>
     </div>
   );
