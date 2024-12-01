@@ -14,7 +14,7 @@ function FilmModalForm({ isOpen, toggleModal, pelicula, setPeliculas }) {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
+//Funcion para el servidor
   const changeFilm = (formData) => {
     fetch(`http://localhost:5000/peliculas/${formData.id}`, {
       method: 'PATCH',
@@ -36,7 +36,7 @@ function FilmModalForm({ isOpen, toggleModal, pelicula, setPeliculas }) {
       })
       .catch((error) => console.error('Error al actualizar la película seleccionada:', error));
   };
-
+//Funcion para cuando se envia el formulario
   const handleSubmit = (e) => {
     e.preventDefault();
     changeFilm(formData);

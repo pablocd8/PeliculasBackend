@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import CrearPelicula from './Crear';
 import SelectGenres from './Generos';
 import './App.css';
+import { usePeliculas } from '../PeliculasContext';
 
-function Formulario({ agregarPelicula }) {
+function Formulario() {
+  const { agregarPelicula } = usePeliculas();
   const [name, setName] = useState('');
   const [year, setYear] = useState('');
   const [image, setImage] = useState('');
@@ -18,20 +19,11 @@ function Formulario({ agregarPelicula }) {
       return;
     }
 
-    const peliculaNueva = {
-      name,
-      year,
-      image,
-      genres, 
-    };
-
-    console.log('Enviando película:', peliculaNueva);
+    const peliculaNueva = { name, year, image, genres };
 
     fetch('http://localhost:5000/peliculas', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(peliculaNueva),
     })
       .then((response) => response.json())
@@ -40,8 +32,8 @@ function Formulario({ agregarPelicula }) {
         setName('');
         setYear('');
         setImage('');
-        setGenres([]); 
-        setNewGenre(''); 
+        setGenres([]);
+        setNewGenre('');
       })
       .catch((error) => {
         console.error('Error al añadir la película:', error);
@@ -52,8 +44,8 @@ function Formulario({ agregarPelicula }) {
   const handleAddGenre = (e) => {
     e.preventDefault();
     if (newGenre && !genres.includes(newGenre)) {
-      setGenres([...genres, newGenre])
-      setNewGenre(''); 
+      setGenres([...genres, newGenre]);
+      setNewGenre('');
     } else {
       alert('Por favor ingrese un género válido y no repetido.');
     }
@@ -69,28 +61,23 @@ function Formulario({ agregarPelicula }) {
       <form onSubmit={agregarPeliculaHandler} id="form-pelicula">
         <input
           type="text"
-          id="Nombre"
           placeholder="Nombre"
-          required
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <input
           type="text"
-          id="year"
           placeholder="Año"
-          required
           value={year}
           onChange={(e) => setYear(e.target.value)}
         />
         <input
           type="text"
-          id="imagen"
           placeholder="Link imagen"
           value={image}
           onChange={(e) => setImage(e.target.value)}
         />
-        <CrearPelicula handleClick={agregarPeliculaHandler} />
+        <button type="submit">Crear</button>
         <div>
           <input
             type="text"
@@ -99,16 +86,6 @@ function Formulario({ agregarPelicula }) {
             placeholder="Añadir nuevo género"
           />
           <button onClick={handleAddGenre}>Añadir Género</button>
-        </div>
-        <div>
-          <h3>Géneros Seleccionados:</h3>
-          <ul>
-            {genres.map((genre, index) => (
-              <li key={index}>
-                {genre} <button onClick={() => handleDeleteGenre(genre)}>Eliminar</button>
-              </li>
-            ))}
-          </ul>
         </div>
         <SelectGenres selectedGenres={genres} setSelectedGenres={setGenres} />
       </form>

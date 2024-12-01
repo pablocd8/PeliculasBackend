@@ -2,7 +2,7 @@ import React from 'react';
 
 function SelectGenres({ selectedGenres, setSelectedGenres }) {
   const allGenres = ['Animation', 'Terror', 'Adventure', 'Action', 'Sci-Fi'];
-
+//Funcion para añadir o eliminar generos de la lista
   const toggleGenre = (genre) => {
     if (selectedGenres.includes(genre)) {
       setSelectedGenres(selectedGenres.filter(g => g !== genre));
